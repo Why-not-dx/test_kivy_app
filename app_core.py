@@ -29,27 +29,75 @@ class LoginScreen(GridLayout):
 		# But you then have to call the super to be sure that you keep the functionnlity of the original class
 		# They recommand calling **kwargs as they are used internally
 		
-		
 		super(LoginScreen, self).__init__(**kwargs)
-		self.cols = 2
+		self.cols = 1
+
 		#Label = widget showcasing something
-		self.add_widget(Label(text= "User Name")) 
+		self.add_widget(Image(source="bravo.png"))
+		
+		self.add_widget(
+			Label(
+				text= "User Name", 
+				font_size = 20, 
+				color = "#70e4ef" 
+				)
+			)
 		#generate the username variable that is a textinput
 		#Then create a widget with that variable to place a textinpu box
-		self.username = TextInput(multiline=False)
+		self.username = TextInput(
+			multiline=False, 
+			padding_y = (10, 10), 
+			size_hint = (1, 1)
+			)
 		self.add_widget(self.username)
-		self.add_widget(Label(text= "Password"))
-		self.password = TextInput(multiline=False)
+		self.add_widget(
+			Label(
+				text= "Password", 
+				font_size = 20, 
+				color = "#70e4ef")
+			)
+		self.password = TextInput(
+			multiline=False, 
+			padding_y = (20, 10), 
+			size_hint = (1, 1),
+			)
 		self.add_widget(self.password)
-		self.add_widget(Image(source="bear.jpg"))
-		self.button = Button(text="Send everything")
+		self.button = Button(
+			text="Send everything", 
+			size_hint = (1, 1), 
+			bold= True, 
+			background_color = "#00FFCE"
+			)
+		self.button.bind(on_press = self.next_page)
 		self.add_widget(self.button)
+		self.checkbox = Label(
+				text= "", 
+				font_size = 20, 
+				color = "#70e4ef")
+		self.add_widget(self.checkbox)
 
-class RoundAbout(App):
+		self.size_hint = (0.8, 0.9)
+		self.pos_hint = {"center_x" : 0.5, "center_y" : 0.5}
+
+
+	def send_button(self, instance):
+		self.checkbox.text = "Login as " + self.username.text + "proceed ?"
+
+
+class HelloScreen(GridLayout):
+
+	def __init__(self, **kwargs):
+		super(HelloScreen, self).__init__(**kwargs)
+		self.colS = 2
+		self.add_widget(Image(source="berserk.jpg"))
+
+
+class RoundAboutApp(App):
 
 	def build(self):
-		return LoginScreen()
+		self.window = LoginScreen()
+		return self.window
 
 if __name__ == "__main__":
-	test = RoundAbout()
+	test = RoundAboutApp()
 	test.run()
