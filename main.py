@@ -8,21 +8,24 @@ from kivy.uix.button import Button
 from kivy.uix.image import Image
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
+
 # goal = make 2 screens to showcase a welcome page then go into a page with images to vote for. 
 # Showcase the like count, dislike count, ratio. 
 
 # Widgets are user interface elements that you add to your program to 
 # provide some kind of functionality. They may or may not be visible. 
-#Examples would be a file browser, buttons, sliders, lists and so on. 
-#Widgets receive MotionEvents.
+# Examples would be a file browser, buttons, sliders, lists and so on. 
+# Widgets receive MotionEvents.
 
 # You use layouts to arrange widgets. 
-#It is of course possible to calculate your widgets’ positions yourself, 
+# It is of course possible to calculate your widgets’ positions yourself, 
 # but often it is more convenient to use one of our ready made layouts. 
 # Examples would be Grid Layouts or Box Layouts. You can also nest layouts.
 
-class LoginScreen(GridLayout):
+# cool explanation for grid organisation = TWT tutorial : 
+# https://www.youtube.com/watch?v=fGWHQA3LhJ8&list=PLzMcBGfZo4-kSJVMyYeOQ8CXJ3z1k7gHn&index=3
 
+class LoginScreen(GridLayout):
 	def __init__(self, **kwargs):
 		
 		# In order to add widgets to the GridLayout object, we override the init method
@@ -31,26 +34,28 @@ class LoginScreen(GridLayout):
 		
 		super(LoginScreen, self).__init__(**kwargs)
 		self.cols = 1
-
-		#Label = widget showcasing something
+		# Label = widget showcasing something
 		self.add_widget(Image(source="bravo.png"))
-		
-		self.add_widget(
+		self.subgrid = GridLayout()
+		self.subgrid.cols = 2
+		self.row_default_height = 40
+
+		self.subgrid.add_widget(
 			Label(
 				text= "User Name", 
 				font_size = 20, 
 				color = "#70e4ef" 
 				)
 			)
-		#generate the username variable that is a textinput
-		#Then create a widget with that variable to place a textinpu box
+		# Generate the username variable that is a textinput
+		# Then create a widget with that variable to place a textinpu box
 		self.username = TextInput(
 			multiline=False, 
 			padding_y = (10, 10), 
 			size_hint = (1, 1)
 			)
-		self.add_widget(self.username)
-		self.add_widget(
+		self.subgrid.add_widget(self.username)
+		self.subgrid.add_widget(
 			Label(
 				text= "Password", 
 				font_size = 20, 
@@ -61,14 +66,17 @@ class LoginScreen(GridLayout):
 			padding_y = (20, 10), 
 			size_hint = (1, 1),
 			)
-		self.add_widget(self.password)
+		self.subgrid.add_widget(self.password)
+
+
+		self.add_widget(self.subgrid)
 		self.button = Button(
 			text="Send everything", 
-			size_hint = (1, 1), 
+			size_hint = (.5, 1), 
 			bold= True, 
 			background_color = "#00FFCE"
 			)
-		self.button.bind(on_press = self.next_page)
+		self.button.bind(on_press = self.send_button)
 		self.add_widget(self.button)
 		self.checkbox = Label(
 				text= "", 
@@ -81,7 +89,7 @@ class LoginScreen(GridLayout):
 
 
 	def send_button(self, instance):
-		self.checkbox.text = "Login as " + self.username.text + "proceed ?"
+		self.checkbox.text = "Login as " + self.username.text + ", proceed ?"
 
 
 class HelloScreen(GridLayout):
